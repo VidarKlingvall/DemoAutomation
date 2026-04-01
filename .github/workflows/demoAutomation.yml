@@ -10,6 +10,7 @@ on:
 #The tests are run from the project
 jobs:
   test:
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

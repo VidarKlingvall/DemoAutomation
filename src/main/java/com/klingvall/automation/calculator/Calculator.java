@@ -23,7 +23,4 @@ public class Calculator {
     public double squareRoot(int a){
         return Math.sqrt(a);
     }
-    public double square(int a){
-        return a*a;
-    }
 }

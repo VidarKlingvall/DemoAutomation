@@ -1,0 +1,26 @@
+name: Automatic running of tests before merge & pull request to main branch.
+
+#When we push or create pull request to main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+#The tests are run from the project
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup on JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+          
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+      - name: Run tests
+        run: ./mvnw test

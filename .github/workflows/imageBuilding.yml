@@ -1,0 +1,30 @@
+name: Builds an image after successfully updating main
+
+on:
+  workflow_run:
+    workflows: ["Run tests"]
+    types:
+      - completed
+
+jobs:
+  build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_PASSWORD}}
+
+      - name: Build Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/examensdemo:latest .
+
+      - name: push image to dockerhub
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME}}/examensdemo:latest
